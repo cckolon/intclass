@@ -1,6 +1,6 @@
 # Integral Classifier
 
-Training a neural network to predict whether functions are integrable.
+Training a neural network to predict whether functions are integrable. Based on the work of Lample and Charton in [Deep Learning for Symbolic Mathematics](https://arxiv.org/pdf/1912.01412).
 
 ## Installation
 
@@ -10,4 +10,5 @@ Training a neural network to predict whether functions are integrable.
 1. Install requirements: `pip install -r requirements.txt`
 1. Create/migrate the db: `python migrate.py`
 1. Make some training data: `python make_data.py 1000`
-1. train the model
+1. Train the model: `python train.py`
+1. Run the model interactively: `python infer.py`
