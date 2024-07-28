@@ -1,12 +1,14 @@
 [tool.black]
-line-length = 72
+line-length = 79
 target-version = ['py311']
 
 [tool.pylint.messages_control]
-max-line-length = 72
+max-line-length = 79
 
 disable = [
   "missing-docstring",
+  "too-few-public-methods",
+  "redefined-outer-name",
 ]
 
 [tool.isort]
