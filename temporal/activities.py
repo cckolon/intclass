@@ -5,9 +5,12 @@ import sympy as sp
 from temporalio import activity
 
 from data_generation.generate_functions import get_function_string
-from data_generation.integration import IncompleteIntegralException
 from data_generation.make_training_data import write_training_data_batch
 from settings import INTEGRATION_TIMEOUT, INTEGRATION_VARIABLE_NAME
+
+
+class IncompleteIntegralException(Exception):
+    pass
 
 
 @activity.defn
