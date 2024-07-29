@@ -41,6 +41,7 @@ class GenerateAndIntegrateFunctionsWF:
             results,
             start_to_close_timeout=timedelta(seconds=10),
         )
+        workflow.continue_as_new()
 
     async def integrate_or_timeout(self, integrand: str) -> tuple:
         once_only = RetryPolicy(maximum_attempts=1)
