@@ -10,6 +10,7 @@ Training a neural network to predict whether functions are integrable. Based on 
 1. Install [Python 3.11](https://www.python.org/downloads/) if you don't already have it.
 1. Clone the repo and `cd` into it.
 1. Make a blank `.env` file: `touch .env`
+1. Allow direnv: `direnv allow`
 1. Make a virtual environment: `python -m venv .venv`
 1. Activate it: `source .venv/bin/activate`
 1. Install requirements: `pip install -r requirements.txt`
