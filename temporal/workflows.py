@@ -40,7 +40,17 @@ class GenerateAndIntegrateFunctionsWF:
             )
         )
         results = await asyncio.gather(
-            *(self.integrate_or_timeout(f) for f in functions if f is not None)
+            *(
+                workflow.execute_activity(
+                    integrate_function_with_timeout,
+                    f,
+                    start_to_close_timeout=timedelta(
+                        seconds=INTEGRATION_TIMEOUT + 1
+                    ),
+                )
+                for f in functions
+                if f is not None
+            )
         )
         workflow.logger.debug(f"Results: {results}")
         await workflow.execute_activity(
@@ -49,12 +59,3 @@ class GenerateAndIntegrateFunctionsWF:
             start_to_close_timeout=timedelta(seconds=10),
         )
         workflow.continue_as_new(params)
-
-    async def integrate_or_timeout(self, integrand: str) -> tuple:
-        once_only = RetryPolicy(maximum_attempts=1)
-        return await workflow.execute_activity(
-            integrate_function_with_timeout,
-            integrand,
-            start_to_close_timeout=timedelta(seconds=INTEGRATION_TIMEOUT + 1),
-            retry_policy=once_only,
-        )
