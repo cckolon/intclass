@@ -13,7 +13,7 @@ from settings import (
     TEMPORAL_SERVER,
 )
 from temporal.activities import (
-    generate_function,
+    generate_function_with_timeout,
     integrate_function_with_timeout,
     write_training_data,
 )
@@ -28,7 +28,7 @@ async def main():
         task_queue="default",
         workflows=[GenerateAndIntegrateFunctionsWF],
         activities=[
-            generate_function,
+            generate_function_with_timeout,
             integrate_function_with_timeout,
             write_training_data,
         ],

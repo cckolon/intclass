@@ -12,7 +12,7 @@ from settings import (
 
 with workflow.unsafe.imports_passed_through():
     from .activities import (
-        generate_function,
+        generate_function_with_timeout,
         integrate_function_with_timeout,
         write_training_data,
     )
@@ -25,7 +25,7 @@ class GenerateAndIntegrateFunctionsWF:
         functions = await asyncio.gather(
             *(
                 workflow.execute_activity(
-                    generate_function,
+                    generate_function_with_timeout,
                     FUNCTION_COMPLEXITY,
                     start_to_close_timeout=timedelta(seconds=10),
                 )
