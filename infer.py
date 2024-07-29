@@ -9,7 +9,5 @@ if __name__ == "__main__":
         result = classifier(f"Is {text} integrable?")
         print(f"Prediction: {result[0]['label']}")
         print(f"Score: {result[0]['score']}")
-        integral = sp.integrate(
-            text, sp.symbols(INTEGRATION_VARIABLE_NAME)
-        )
+        integral = sp.integrate(text, sp.symbols(INTEGRATION_VARIABLE_NAME))
         print(f"Integral: {integral}")

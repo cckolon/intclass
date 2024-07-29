@@ -1,13 +1,12 @@
 import asyncio
 from datetime import timedelta
-
+from dataclasses import dataclass
 from temporalio import workflow
 from temporalio.common import RetryPolicy
 
 from settings import (
-    DATA_GENERATION_BATCH_SIZE,
-    FUNCTION_COMPLEXITY,
     INTEGRATION_TIMEOUT,
+    GENERATION_TIMEOUT,
 )
 
 with workflow.unsafe.imports_passed_through():
@@ -18,18 +17,26 @@ with workflow.unsafe.imports_passed_through():
     )
 
 
+@dataclass
+class GenerateAndIntegrateFunctionsParams:
+    batch_size: int = 100
+    function_complexity: int = 10
+
+
 @workflow.defn
 class GenerateAndIntegrateFunctionsWF:
     @workflow.run
-    async def run(self):
+    async def run(self, input: GenerateAndIntegrateFunctionsParams):
         functions = await asyncio.gather(
             *(
                 workflow.execute_activity(
                     generate_function_with_timeout,
-                    FUNCTION_COMPLEXITY,
-                    start_to_close_timeout=timedelta(seconds=10),
+                    input.function_complexity,
+                    start_to_close_timeout=timedelta(
+                        seconds=GENERATION_TIMEOUT + 1
+                    ),
                 )
-                for _ in range(DATA_GENERATION_BATCH_SIZE)
+                for _ in range(input.batch_size)
             )
         )
         results = await asyncio.gather(

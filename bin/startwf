@@ -1,2 +1,2 @@
 #! /usr/bin/bash
-temporal workflow execute --type=GenerateAndIntegrateFunctionsWF --task-queue=default
+temporal workflow execute --type=GenerateAndIntegrateFunctionsWF --task-queue=default --input='{}'
