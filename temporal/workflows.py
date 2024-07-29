@@ -26,17 +26,17 @@ class GenerateAndIntegrateFunctionsParams:
 @workflow.defn
 class GenerateAndIntegrateFunctionsWF:
     @workflow.run
-    async def run(self, input: GenerateAndIntegrateFunctionsParams):
+    async def run(self, params: GenerateAndIntegrateFunctionsParams):
         functions = await asyncio.gather(
             *(
                 workflow.execute_activity(
                     generate_function_with_timeout,
-                    input.function_complexity,
+                    params.function_complexity,
                     start_to_close_timeout=timedelta(
                         seconds=GENERATION_TIMEOUT + 1
                     ),
                 )
-                for _ in range(input.batch_size)
+                for _ in range(params.batch_size)
             )
         )
         results = await asyncio.gather(
@@ -48,7 +48,7 @@ class GenerateAndIntegrateFunctionsWF:
             results,
             start_to_close_timeout=timedelta(seconds=10),
         )
-        workflow.continue_as_new()
+        workflow.continue_as_new(params)
 
     async def integrate_or_timeout(self, integrand: str) -> tuple:
         once_only = RetryPolicy(maximum_attempts=1)
