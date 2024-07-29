@@ -7,7 +7,6 @@ https://arxiv.org/abs/1912.01412
 """
 
 import random
-from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from functools import cache
 from typing import Optional
@@ -66,15 +65,11 @@ class Node:
 
 
 def get_unary_operator():
-    return UNARY_OPERATORS[
-        random.randint(0, len(UNARY_OPERATORS) - 1)
-    ]
+    return UNARY_OPERATORS[random.randint(0, len(UNARY_OPERATORS) - 1)]
 
 
 def get_binary_operator():
-    return BINARY_OPERATORS[
-        random.randint(0, len(BINARY_OPERATORS) - 1)
-    ]
+    return BINARY_OPERATORS[random.randint(0, len(BINARY_OPERATORS) - 1)]
 
 
 def get_number():
@@ -95,9 +90,7 @@ def number_of_subtrees(empty_nodes: int, internal_nodes: int) -> int:
     # e is the number of empty nodes
     # n is the number of internal nodes
     if empty_nodes < 0 or internal_nodes < 0:
-        raise ValueError(
-            "Empty nodes and internal nodes must be non-negative"
-        )
+        raise ValueError("Empty nodes and internal nodes must be non-negative")
     if empty_nodes == 0:
         return 0
     if internal_nodes == 0:
@@ -191,13 +184,3 @@ def get_function_string(num_internal_nodes: int):
     tree = generate_unary_binary_tree(num_internal_nodes)
     populate_tree(tree)
     return str(tree.as_simplified_function())
-
-
-def get_multiple_functions(n: int, num_internal_nodes: int):
-    with ProcessPoolExecutor() as executor:
-        return list(
-            executor.map(
-                get_function_string,
-                [num_internal_nodes] * n,
-            )
-        )

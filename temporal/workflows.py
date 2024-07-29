@@ -33,7 +33,7 @@ class GenerateAndIntegrateFunctionsWF:
             )
         )
         results = await asyncio.gather(
-            *(self.integrate_or_timeout(f) for f in functions)
+            *(self.integrate_or_timeout(f) for f in functions if f is not None)
         )
         workflow.logger.debug(f"Results: {results}")
         await workflow.execute_activity(
